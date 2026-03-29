@@ -1,0 +1,50 @@
+; Engine configuration file.
+; It's best edited using the editor UI and not directly,
+; since the parameters that go here are not all obvious.
+;
+; Format:
+;   [section] ; section goes between []
+;   param=value ; assign values to parameters
+
+config_version=5
+
+[application]
+
+config/name="Statecraft"
+config/version="0.1.1"
+run/main_scene="res://scenes/main/main_menu.tscn"
+config/features=PackedStringArray("4.6", "Mobile")
+config/icon="res://resources/pictures/icon.png"
+
+[autoload]
+
+GameLogger="*res://scripts/autoload/game_logger.gd"
+NetworkManager="*res://scripts/core/network_manager.gd"
+ModManager="*res://scripts/core/mod_manager.gd"
+ModLoader="*res://scripts/core/mod_loader.gd"
+BattleManager="*res://scripts/core/battle_manager.gd"
+CardManager="*res://scripts/core/card_manager.gd"
+GodotTapTap="*uid://e58xq17tlwm2"
+
+[display]
+
+window/stretch/mode="canvas_items"
+window/stretch/aspect="expand"
+
+[editor_plugins]
+
+enabled=PackedStringArray("res://addons/GodotTapTapSDK/plugin.cfg")
+
+[input_devices]
+
+"##å¼å¯åç³»ç»ä¼åPan/Magnifyç­æå¿ï¼ç¼©æ¾ä»¥ä»£ç åè·ç¦»æ¯ä¸ºä¸»ï¼é¿åä¾èµæåçéç½®é®pointing/android/enable_pan_and_scale_gestures"=true
+
+[physics]
+
+3d/physics_engine="Jolt Physics"
+
+[rendering]
+
+rendering_device/driver.windows="d3d12"
+renderer/rendering_method="mobile"
+textures/vram_compression/import_etc2_astc=true

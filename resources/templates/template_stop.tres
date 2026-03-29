@@ -1,0 +1,10 @@
+[gd_resource type="Resource" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/card_resource.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+card_name = "见好就收"
+effect_value = 0
+count_towards_contradiction = true
+force_ends_turn = true

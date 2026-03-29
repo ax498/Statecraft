@@ -1,0 +1,12 @@
+# Godot 4+ specific ignores
+.godot/
+/android/
+
+# Local editor / AI tool state
+.cursor/
+.vscode/
+
+# Runtime logs and local LLM config
+logs/
+*.log
+litellm.yaml

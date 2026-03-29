@@ -1,0 +1,573 @@
+[gd_scene load_steps=10 format=3 uid="uid://c8x7k2m5oap1q"]
+
+[ext_resource type="Script" path="res://scenes/battle/battle_test.gd" id="1"]
+[ext_resource type="Texture2D" path="res://resources/pictures/GameScene.png" id="2"]
+
+[sub_resource type="StyleBoxFlat" id="5"]
+bg_color = Color(0.2, 0.2, 0.25, 0.3)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.5, 0.5, 0.6, 0.9)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+content_margin_left = 8.0
+content_margin_top = 8.0
+content_margin_right = 8.0
+content_margin_bottom = 8.0
+
+[sub_resource type="StyleBoxFlat" id="1"]
+bg_color = Color(0.12, 0.12, 0.15, 0.9)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+content_margin_left = 8.0
+content_margin_top = 8.0
+content_margin_right = 8.0
+content_margin_bottom = 8.0
+
+[sub_resource type="StyleBoxFlat" id="2"]
+bg_color = Color(0.941, 0.941, 0.941, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.294, 0.294, 0.29, 1)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+content_margin_left = 12.0
+content_margin_top = 8.0
+content_margin_right = 12.0
+content_margin_bottom = 8.0
+
+[sub_resource type="StyleBoxFlat" id="3"]
+bg_color = Color(0.941, 0.941, 0.941, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.294, 0.294, 0.29, 1)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+content_margin_left = 20.0
+content_margin_top = 16.0
+content_margin_right = 20.0
+content_margin_bottom = 16.0
+
+[sub_resource type="StyleBoxFlat" id="4"]
+bg_color = Color(0.941, 0.941, 0.941, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0, 0, 0, 1)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+content_margin_left = 12.0
+content_margin_top = 8.0
+content_margin_right = 12.0
+content_margin_bottom = 8.0
+
+[sub_resource type="StyleBoxFlat" id="10"]
+bg_color = Color(0.2, 0.2, 0.22, 0.4)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0, 0, 0, 0.45)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+
+[sub_resource type="InputEventKey" id="9"]
+keycode = 82
+
+[sub_resource type="Shortcut" id="6"]
+events = [SubResource("9")]
+
+[sub_resource type="Shortcut" id="7"]
+events = [SubResource("9")]
+
+[node name="BattleTest" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1")
+
+[node name="Background" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2")
+expand_mode = 1
+stretch_mode = 6
+
+[node name="ShakeLayer" type="CanvasLayer" parent="."]
+
+[node name="FlashRect" type="ColorRect" parent="ShakeLayer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+color = Color(1, 0, 0, 0)
+
+[node name="Root" type="Control" parent="ShakeLayer"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MainMargin" type="MarginContainer" parent="ShakeLayer/Root"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 16
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 16
+
+[node name="MainVBox" type="VBoxContainer" parent="ShakeLayer/Root/MainMargin"]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="FixedTop" type="VBoxContainer" parent="ShakeLayer/Root/MainMargin/MainVBox"]
+layout_mode = 2
+theme_override_constants/separation = 8
+size_flags_vertical = 0
+
+[node name="DeckCountLabel" type="Label" parent="ShakeLayer/Root/MainMargin/MainVBox/FixedTop"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 16
+text = "牌堆剩余：12 张"
+horizontal_alignment = 1
+
+[node name="StatusRow" type="HBoxContainer" parent="ShakeLayer/Root/MainMargin/MainVBox/FixedTop"]
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="CurrentPlayerLabel" type="Label" parent="ShakeLayer/Root/MainMargin/MainVBox/FixedTop/StatusRow"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 18
+text = "当前轮到：玩家"
+
+[node name="ScoreLabel" type="Label" parent="ShakeLayer/Root/MainMargin/MainVBox/FixedTop/StatusRow"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 16
+text = "玩家：0 | 对手：0"
+
+[node name="GameViewport" type="Control" parent="ShakeLayer/Root/MainMargin/MainVBox"]
+layout_mode = 2
+size_flags_vertical = 3
+custom_minimum_size = Vector2(0, 200)
+
+[node name="ViewportPanHit" type="ColorRect" parent="ShakeLayer/Root/MainMargin/MainVBox/GameViewport"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+## STOP：PASS 时事件会穿透，露底条带区仍可能收不到稳定 gui_input
+mouse_filter = 1
+color = Color(1, 1, 1, 0)
+
+[node name="ViewportContent" type="Control" parent="ShakeLayer/Root/MainMargin/MainVBox/GameViewport"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+## IGNORE：放缩后父级 STOP 易与视觉错位；空白穿透至 ViewportPanHit 拖屏（脚本会再设一次）
+mouse_filter = 0
+
+[node name="TurnContainerWrapper" type="PanelContainer" parent="ShakeLayer/Root/MainMargin/MainVBox/GameViewport/ViewportContent"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -200.0
+offset_top = 8.0
+offset_right = 200.0
+offset_bottom = 148.0
+grow_horizontal = 2
+theme_override_styles/panel = SubResource("5")
+
+[node name="TurnContainerScroll" type="ScrollContainer" parent="ShakeLayer/Root/MainMargin/MainVBox/GameViewport/ViewportContent/TurnContainerWrapper"]
+layout_mode = 2
+horizontal_scroll_mode = 3
+vertical_scroll_mode = 0
+
+[node name="TurnContainerDisplay" type="HBoxContainer" parent="ShakeLayer/Root/MainMargin/MainVBox/GameViewport/ViewportContent/TurnContainerWrapper/TurnContainerScroll"]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_constants/separation = 8
+alignment = 1
+custom_minimum_size = Vector2(0, 120)
+
+[node name="OtherPlayersArea" type="Control" parent="ShakeLayer/Root/MainMargin/MainVBox/GameViewport/ViewportContent"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 8.0
+offset_top = 160.0
+offset_right = -8.0
+offset_bottom = -8.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="FixedBottom" type="VBoxContainer" parent="ShakeLayer/Root/MainMargin/MainVBox"]
+layout_mode = 2
+theme_override_constants/separation = 8
+size_flags_vertical = 0
+size_flags_vertical = 0
+
+[node name="PlayerHandScroll" type="ScrollContainer" parent="ShakeLayer/Root/MainMargin/MainVBox/FixedBottom"]
+layout_mode = 2
+custom_minimum_size = Vector2(0, 80)
+horizontal_scroll_mode = 3
+vertical_scroll_mode = 0
+
+[node name="PlayerHandDisplay" type="HBoxContainer" parent="ShakeLayer/Root/MainMargin/MainVBox/FixedBottom/PlayerHandScroll"]
+layout_mode = 2
+theme_override_constants/separation = 4
+alignment = 1
+size_flags_horizontal = 4
+
+[node name="BtnRow" type="HBoxContainer" parent="ShakeLayer/Root/MainMargin/MainVBox/FixedBottom"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="DrawBtn" type="Button" parent="ShakeLayer/Root/MainMargin/MainVBox/FixedBottom/BtnRow"]
+layout_mode = 2
+custom_minimum_size = Vector2(0, 40)
+theme_override_colors/font_color = Color(0.294, 0.294, 0.29, 1)
+theme_override_colors/font_hover_color = Color(0.2, 0.2, 0.2, 1)
+theme_override_colors/font_disabled_color = Color(0.6, 0.6, 0.6, 1)
+theme_override_styles/normal = SubResource("2")
+theme_override_styles/hover = SubResource("2")
+theme_override_styles/disabled = SubResource("2")
+theme_override_styles/pressed = SubResource("2")
+text = "抽牌"
+
+[node name="EndTurnBtn" type="Button" parent="ShakeLayer/Root/MainMargin/MainVBox/FixedBottom/BtnRow"]
+layout_mode = 2
+custom_minimum_size = Vector2(0, 40)
+theme_override_colors/font_color = Color(0.294, 0.294, 0.29, 1)
+theme_override_colors/font_hover_color = Color(0.2, 0.2, 0.2, 1)
+theme_override_colors/font_disabled_color = Color(0.6, 0.6, 0.6, 1)
+theme_override_styles/normal = SubResource("2")
+theme_override_styles/hover = SubResource("2")
+theme_override_styles/disabled = SubResource("2")
+theme_override_styles/pressed = SubResource("2")
+text = "结束回合"
+
+[node name="Log" type="RichTextLabel" parent="ShakeLayer/Root/MainMargin/MainVBox/FixedBottom"]
+layout_mode = 2
+size_flags_vertical = 0
+theme_override_colors/default_color = Color(0.9, 0.9, 0.9, 1)
+theme_override_font_sizes/normal_font_size = 12
+text = "日志："
+bbcode_enabled = true
+scroll_active = true
+custom_minimum_size = Vector2(0, 80)
+theme_override_styles/normal = SubResource("1")
+
+[node name="SettingBtn" type="Button" parent="ShakeLayer/Root"]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -80.0
+offset_top = 20.0
+offset_right = -20.0
+offset_bottom = 52.0
+grow_horizontal = 0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_hover_color = Color(0.2, 0.2, 0.2, 1)
+theme_override_colors/font_disabled_color = Color(0.6, 0.6, 0.6, 1)
+theme_override_styles/normal = SubResource("4")
+theme_override_styles/hover = SubResource("4")
+theme_override_styles/disabled = SubResource("4")
+theme_override_styles/pressed = SubResource("4")
+theme_override_font_sizes/font_size = 14
+text = "设置"
+
+[node name="SettingPanel" type="PopupPanel" parent="ShakeLayer/Root"]
+transparent = false
+visible = false
+size = Vector2i(240, 200)
+theme_override_styles/panel = SubResource("10")
+
+[node name="MarginContainer" type="MarginContainer" parent="ShakeLayer/Root/SettingPanel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 4.0
+offset_top = 4.0
+offset_right = 236.0
+offset_bottom = 196.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 16
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 16
+
+[node name="VBox" type="VBoxContainer" parent="ShakeLayer/Root/SettingPanel/MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="TitleLabel" type="Label" parent="ShakeLayer/Root/SettingPanel/MarginContainer/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 18
+text = "设置"
+horizontal_alignment = 1
+
+[node name="ButtonContainer" type="VBoxContainer" parent="ShakeLayer/Root/SettingPanel/MarginContainer/VBox"]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="ModLayer" type="CanvasLayer" parent="."]
+layer = 9
+
+[node name="ModDetailPanel" type="Control" parent="ModLayer"]
+visible = false
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 0
+
+[node name="Overlay" type="ColorRect" parent="ModLayer/ModDetailPanel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.6)
+
+[node name="CenterContainer" type="CenterContainer" parent="ModLayer/ModDetailPanel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Panel" type="PanelContainer" parent="ModLayer/ModDetailPanel/CenterContainer"]
+layout_mode = 2
+theme_override_styles/panel = SubResource("3")
+custom_minimum_size = Vector2(360, 420)
+
+[node name="VBox" type="VBoxContainer" parent="ModLayer/ModDetailPanel/CenterContainer/Panel"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="TitleLabel" type="Label" parent="ModLayer/ModDetailPanel/CenterContainer/Panel/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.294, 0.294, 0.29, 1)
+theme_override_font_sizes/font_size = 20
+text = "Mod 扩展"
+horizontal_alignment = 1
+
+[node name="ScrollContainer" type="ScrollContainer" parent="ModLayer/ModDetailPanel/CenterContainer/Panel/VBox"]
+layout_mode = 2
+size_flags_vertical = 3
+custom_minimum_size = Vector2(0, 160)
+
+[node name="ModList" type="VBoxContainer" parent="ModLayer/ModDetailPanel/CenterContainer/Panel/VBox/ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 4
+
+[node name="DetailLabel" type="Label" parent="ModLayer/ModDetailPanel/CenterContainer/Panel/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.294, 0.294, 0.29, 1)
+theme_override_font_sizes/font_size = 14
+text = "点击上方条目查看详情"
+autowrap_mode = 3
+custom_minimum_size = Vector2(0, 60)
+
+[node name="OverrideLabel" type="Label" parent="ModLayer/ModDetailPanel/CenterContainer/Panel/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.294, 0.294, 0.29, 1)
+theme_override_font_sizes/font_size = 12
+text = "覆盖资源：无"
+autowrap_mode = 3
+
+[node name="RestartHintLabel" type="Label" parent="ModLayer/ModDetailPanel/CenterContainer/Panel/VBox"]
+visible = false
+layout_mode = 2
+theme_override_colors/font_color = Color(0.6, 0.4, 0, 1)
+theme_override_font_sizes/font_size = 12
+text = "部分修改需重启游戏后生效"
+autowrap_mode = 3
+
+[node name="BrowseDirBtn" type="Button" parent="ModLayer/ModDetailPanel/CenterContainer/Panel/VBox"]
+layout_mode = 2
+custom_minimum_size = Vector2(0, 36)
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_hover_color = Color(0.2, 0.2, 0.2, 1)
+theme_override_colors/font_disabled_color = Color(0.6, 0.6, 0.6, 1)
+theme_override_styles/normal = SubResource("2")
+theme_override_styles/hover = SubResource("2")
+theme_override_styles/disabled = SubResource("2")
+theme_override_styles/pressed = SubResource("2")
+text = "浏览目录"
+
+[node name="RefreshModsBtn" type="Button" parent="ModLayer/ModDetailPanel/CenterContainer/Panel/VBox"]
+layout_mode = 2
+custom_minimum_size = Vector2(0, 36)
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_hover_color = Color(0.2, 0.2, 0.2, 1)
+theme_override_colors/font_disabled_color = Color(0.6, 0.6, 0.6, 1)
+theme_override_styles/normal = SubResource("2")
+theme_override_styles/hover = SubResource("2")
+theme_override_styles/disabled = SubResource("2")
+theme_override_styles/pressed = SubResource("2")
+text = "重新浏览"
+
+[node name="GenTemplateBtn" type="Button" parent="ModLayer/ModDetailPanel/CenterContainer/Panel/VBox"]
+layout_mode = 2
+custom_minimum_size = Vector2(0, 36)
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_hover_color = Color(0.2, 0.2, 0.2, 1)
+theme_override_colors/font_disabled_color = Color(0.6, 0.6, 0.6, 1)
+theme_override_styles/normal = SubResource("2")
+theme_override_styles/hover = SubResource("2")
+theme_override_styles/disabled = SubResource("2")
+theme_override_styles/pressed = SubResource("2")
+text = "生成 Mod 模板"
+
+[node name="CloseBtn" type="Button" parent="ModLayer/ModDetailPanel/CenterContainer/Panel/VBox"]
+layout_mode = 2
+custom_minimum_size = Vector2(0, 40)
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_hover_color = Color(0.2, 0.2, 0.2, 1)
+theme_override_colors/font_disabled_color = Color(0.6, 0.6, 0.6, 1)
+theme_override_styles/normal = SubResource("2")
+theme_override_styles/hover = SubResource("2")
+theme_override_styles/disabled = SubResource("2")
+theme_override_styles/pressed = SubResource("2")
+text = "返回"
+
+[node name="ResultLayer" type="CanvasLayer" parent="."]
+layer = 10
+
+[node name="ResultPanel" type="Control" parent="ResultLayer"]
+visible = false
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 0
+
+[node name="Overlay" type="ColorRect" parent="ResultLayer/ResultPanel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.6)
+
+[node name="CenterContainer" type="CenterContainer" parent="ResultLayer/ResultPanel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Panel" type="PanelContainer" parent="ResultLayer/ResultPanel/CenterContainer"]
+layout_mode = 2
+theme_override_styles/panel = SubResource("3")
+custom_minimum_size = Vector2(320, 180)
+
+[node name="VBox" type="VBoxContainer" parent="ResultLayer/ResultPanel/CenterContainer/Panel"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="ResultTitleLabel" type="Label" parent="ResultLayer/ResultPanel/CenterContainer/Panel/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 24
+text = "大获全胜"
+horizontal_alignment = 1
+
+[node name="ResultScoreLabel" type="Label" parent="ResultLayer/ResultPanel/CenterContainer/Panel/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 18
+text = "最终比分 0 : 0"
+horizontal_alignment = 1
+
+[node name="BtnRow" type="HBoxContainer" parent="ResultLayer/ResultPanel/CenterContainer/Panel/VBox"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="RestartBtn" type="Button" parent="ResultLayer/ResultPanel/CenterContainer/Panel/VBox/BtnRow"]
+layout_mode = 2
+custom_minimum_size = Vector2(0, 36)
+shortcut = SubResource("6")
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_hover_color = Color(0.2, 0.2, 0.2, 1)
+theme_override_colors/font_disabled_color = Color(0.6, 0.6, 0.6, 1)
+theme_override_styles/normal = SubResource("4")
+theme_override_styles/hover = SubResource("4")
+theme_override_styles/disabled = SubResource("4")
+theme_override_styles/pressed = SubResource("4")
+text = "重新开始"
+
+[node name="BtnRowSpacer" type="Control" parent="ResultLayer/ResultPanel/CenterContainer/Panel/VBox/BtnRow"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="BackBtn" type="Button" parent="ResultLayer/ResultPanel/CenterContainer/Panel/VBox/BtnRow"]
+layout_mode = 2
+custom_minimum_size = Vector2(0, 36)
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_hover_color = Color(0.2, 0.2, 0.2, 1)
+theme_override_colors/font_disabled_color = Color(0.6, 0.6, 0.6, 1)
+theme_override_styles/normal = SubResource("4")
+theme_override_styles/hover = SubResource("4")
+theme_override_styles/disabled = SubResource("4")
+theme_override_styles/pressed = SubResource("4")
+text = "返回"
