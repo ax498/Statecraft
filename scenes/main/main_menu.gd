@@ -208,7 +208,7 @@ func _get_taptap_issue_message(default_message: String, bridge: Node = null) -> 
 	var reason: String = _get_taptap_runtime_error(bridge).strip_edges()
 	if reason.is_empty():
 		return default_message
-	return "%s\n\nReason: %s" % [default_message, reason]
+	return "%s\n\n原因：%s" % [default_message, reason]
 
 
 func _summarize_taptap_payload(payload: Variant) -> String:
@@ -260,9 +260,9 @@ func _on_taptap_login_timeout(request_id: int) -> void:
 	_log_warn("login_timeout", {"request_id": request_id, "seconds": TAPTAP_LOGIN_TIMEOUT_SECONDS, "reason": _get_taptap_runtime_error()})
 	_refresh_start_game_btn_state()
 	_show_message_dialog(
-		"Login timeout",
+		"登录超时",
 		_get_taptap_issue_message(
-			"TapTap login did not return within %d seconds.\n\nPlease check whether the TapTap app can open normally, whether the network is available, and whether the APK signing certificate MD5 has been added in the TapTap developer console."
+			"TapTap 登录在 %d 秒内未返回结果。\n\n请检查 TapTap App 是否能正常打开、当前网络是否可用，以及 TapTap 开发者后台是否已添加 APK 签名证书 MD5。"
 			% int(TAPTAP_LOGIN_TIMEOUT_SECONDS)
 		)
 	)
@@ -275,9 +275,9 @@ func _on_taptap_compliance_timeout(request_id: int) -> void:
 	_log_warn("compliance_timeout", {"request_id": request_id, "seconds": TAPTAP_COMPLIANCE_TIMEOUT_SECONDS, "reason": _get_taptap_runtime_error()})
 	_refresh_start_game_btn_state()
 	_show_message_dialog(
-		"Compliance timeout",
+		"防沉迷校验超时",
 		_get_taptap_issue_message(
-			"TapTap anti-addiction verification did not return within %d seconds. Please check the network connection and TapTap runtime status, then try again."
+			"TapTap 防沉迷校验在 %d 秒内未返回结果。请检查网络连接和 TapTap 运行环境后重试。"
 			% int(TAPTAP_COMPLIANCE_TIMEOUT_SECONDS)
 		)
 	)
@@ -297,8 +297,8 @@ func _on_taptap_login_pressed() -> void:
 	if OS.has_feature("android"):
 		_log_warn("login_unavailable_android", {"reason": _get_taptap_runtime_error()})
 		_show_message_dialog(
-			"Login unavailable",
-			_get_taptap_issue_message("TapTap login could not be started on this Android build.")
+			"无法登录",
+			_get_taptap_issue_message("当前 Android 构建无法启动 TapTap 登录。")
 		)
 		return
 	if not Engine.has_singleton("GodotTapTapSDK"):
@@ -307,8 +307,8 @@ func _on_taptap_login_pressed() -> void:
 		return
 	_log_warn("login_unavailable_runtime", {"reason": _get_taptap_runtime_error()})
 	_show_message_dialog(
-		"Login unavailable",
-		_get_taptap_issue_message("TapTap login could not be started in the current runtime.")
+		"无法登录",
+		_get_taptap_issue_message("当前运行环境无法启动 TapTap 登录。")
 	)
 
 
@@ -324,11 +324,11 @@ func _on_taptap_login_result(code: int, payload: Variant) -> void:
 			_go_to_mode_select()
 		return
 	_log_warn("login_failed", {"code": code, "payload": _summarize_taptap_payload(payload)})
-	var message: String = "TapTap login failed or was cancelled.\n\nCallback code: %d" % code
+	var message: String = "TapTap 登录失败或已取消。\n\n回调码：%d" % code
 	var details: String = _summarize_taptap_payload(payload)
 	if not details.is_empty():
-		message += "\nDetails: %s" % details
-	_show_message_dialog("Login failed", message)
+		message += "\n详情：%s" % details
+	_show_message_dialog("登录失败", message)
 
 func _on_taptap_anti_addiction_result(code: int) -> void:
 	_log_record("compliance_callback", {"code": code})
@@ -346,31 +346,31 @@ func _on_taptap_anti_addiction_result(code: int) -> void:
 			_go_to_mode_select()
 		COMPLIANCE_EXITED:
 			_log_warn("compliance_exited", {"code": code})
-			_show_message_dialog("Compliance incomplete", "The real-name/compliance flow was exited before completion.")
+			_show_message_dialog("防沉迷校验未完成", "实名认证或防沉迷流程在完成前已退出。")
 		COMPLIANCE_SWITCH_ACCOUNT:
 			_log_warn("compliance_switch_account", {"code": code})
-			_show_message_dialog("Account switched", "The TapTap account changed during compliance verification. Please log in again.")
+			_show_message_dialog("账号已切换", "TapTap 账号在防沉迷校验过程中发生变化，请重新登录。")
 		COMPLIANCE_PERIOD_RESTRICT:
 			_log_warn("compliance_period_restrict", {"code": code})
-			_show_message_dialog("Playtime restricted", "The current account is outside the allowed play period.")
+			_show_message_dialog("当前时段不可游玩", "当前账号不在允许的游戏时段内。")
 		COMPLIANCE_DURATION_LIMIT:
 			_log_warn("compliance_duration_limit", {"code": code})
-			_show_message_dialog("Playtime limit reached", "The current account has reached today's allowed playtime.")
+			_show_message_dialog("今日时长已达上限", "当前账号今日可用游戏时长已用尽。")
 		COMPLIANCE_AGE_LIMIT:
 			_log_warn("compliance_age_limit", {"code": code})
-			_show_message_dialog("Age restricted", "The current account is not allowed to enter the game due to age restrictions.")
+			_show_message_dialog("年龄受限", "当前账号因年龄限制无法进入游戏。")
 		COMPLIANCE_TOKEN_EXPIRED:
 			_log_warn("compliance_token_expired", {"code": code})
-			_show_message_dialog("Session expired", "TapTap login or compliance credentials expired. Please log in again.")
+			_show_message_dialog("会话已过期", "TapTap 登录或防沉迷校验凭证已过期，请重新登录。")
 		COMPLIANCE_REAL_NAME_STOP:
 			_log_warn("compliance_real_name_stop", {"code": code})
-			_show_message_dialog("Verification cancelled", "Real-name or compliance verification was cancelled before completion.")
+			_show_message_dialog("校验已取消", "实名认证或防沉迷校验在完成前已被取消。")
 		COMPLIANCE_INVALID_CLIENT_OR_NETWORK_ERROR:
 			_log_warn("compliance_invalid_client_or_network", {"code": code})
-			_show_message_dialog("Compliance failed", "Compliance verification failed because the build or network is unavailable.")
+			_show_message_dialog("防沉迷校验失败", "由于构建环境或网络不可用，防沉迷校验失败。")
 		_:
 			_log_warn("compliance_unknown_code", {"code": code})
-			_show_message_dialog("Compliance failed", "Unknown compliance callback code: %d." % code)
+			_show_message_dialog("防沉迷校验失败", "未知的防沉迷回调码：%d。" % code)
 
 func _start_anti_addiction_check() -> void:
 	var bridge: Node = _get_taptap_bridge()
@@ -378,8 +378,8 @@ func _start_anti_addiction_check() -> void:
 		_log_warn("compliance_start_bridge_missing")
 		_refresh_start_game_btn_state()
 		_show_message_dialog(
-			"Compliance unavailable",
-			_get_taptap_issue_message("TapTap runtime is missing, so compliance verification cannot start.", bridge)
+			"防沉迷功能不可用",
+			_get_taptap_issue_message("缺少 TapTap 运行环境，无法开始防沉迷校验。", bridge)
 		)
 		return
 	var started: bool = bool(bridge.call("quickCheck"))
@@ -387,8 +387,8 @@ func _start_anti_addiction_check() -> void:
 		_log_warn("compliance_start_failed", {"reason": _get_taptap_runtime_error(bridge)})
 		_refresh_start_game_btn_state()
 		_show_message_dialog(
-			"Compliance unavailable",
-			_get_taptap_issue_message("TapTap runtime failed to start anti-addiction verification.", bridge)
+			"防沉迷功能不可用",
+			_get_taptap_issue_message("TapTap 运行环境启动防沉迷校验失败。", bridge)
 		)
 		return
 	_anti_addiction_check_in_progress = true
@@ -496,7 +496,7 @@ func _show_lunce_player_count_dialog() -> void:
 	margin.add_child(vbox)
 
 	var title: Label = Label.new()
-	title.text = "Lunce - Player Count"
+	title.text = "论策 - 玩家人数"
 	title.add_theme_color_override("font_color", Color(0, 0, 0, 1))
 	title.add_theme_font_size_override("font_size", 18)
 	title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
@@ -505,7 +505,7 @@ func _show_lunce_player_count_dialog() -> void:
 	var row: HBoxContainer = HBoxContainer.new()
 	row.add_theme_constant_override("separation", 12)
 	var lbl: Label = Label.new()
-	lbl.text = "Players (2-8):"
+	lbl.text = "人数（2-8）："
 	lbl.add_theme_color_override("font_color", Color(0, 0, 0, 1))
 	row.add_child(lbl)
 	var spin: SpinBox = SpinBox.new()
@@ -519,7 +519,7 @@ func _show_lunce_player_count_dialog() -> void:
 
 	var btn_row: HBoxContainer = HBoxContainer.new()
 	btn_row.add_theme_constant_override("separation", 12)
-	var confirm_btn: Button = _create_setting_button("Confirm")
+	var confirm_btn: Button = _create_setting_button("确定")
 	confirm_btn.pressed.connect(func() -> void:
 		var cm: Node = get_node("/root/CardManager")
 		var bm: Node = get_node("/root/BattleManager")
@@ -538,7 +538,7 @@ func _show_lunce_player_count_dialog() -> void:
 		get_tree().change_scene_to_file("res://scenes/battle/battle_test.tscn")
 	)
 	btn_row.add_child(confirm_btn)
-	var cancel_btn: Button = _create_setting_button("Cancel")
+	var cancel_btn: Button = _create_setting_button("取消")
 	cancel_btn.pressed.connect(top_layer.queue_free)
 	btn_row.add_child(cancel_btn)
 	vbox.add_child(btn_row)
@@ -599,7 +599,7 @@ func _show_yanbing_network_dialog() -> void:
 	margin.add_child(vbox)
 
 	var title_label: Label = Label.new()
-	title_label.text = "Yanbing - LAN Battle"
+	title_label.text = "演兵 - 局域网对战"
 	title_label.add_theme_color_override("font_color", Color(0, 0, 0, 1))
 	title_label.add_theme_font_size_override("font_size", 18)
 	title_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
@@ -608,7 +608,7 @@ func _show_yanbing_network_dialog() -> void:
 	var player_count_row: HBoxContainer = HBoxContainer.new()
 	player_count_row.add_theme_constant_override("separation", 8)
 	var pc_label: Label = Label.new()
-	pc_label.text = "Players:"
+	pc_label.text = "人数："
 	pc_label.add_theme_color_override("font_color", Color(0, 0, 0, 1))
 	player_count_row.add_child(pc_label)
 	var pc_spin: SpinBox = SpinBox.new()
@@ -621,17 +621,17 @@ func _show_yanbing_network_dialog() -> void:
 	vbox.add_child(player_count_row)
 
 	var ip_label: Label = Label.new()
-	ip_label.text = "Host IP (for join):"
+	ip_label.text = "房主 IP（加入用）："
 	ip_label.add_theme_color_override("font_color", Color(0, 0, 0, 1))
 	vbox.add_child(ip_label)
 
 	var ip_edit: LineEdit = LineEdit.new()
-	ip_edit.placeholder_text = "Host IP, e.g. 192.168.1.100"
+	ip_edit.placeholder_text = "房主 IP，例如 192.168.1.100"
 	ip_edit.custom_minimum_size = Vector2(0, 32)
 	vbox.add_child(ip_edit)
 
 	var port_label: Label = Label.new()
-	port_label.text = "Port:"
+	port_label.text = "端口："
 	port_label.add_theme_color_override("font_color", Color(0, 0, 0, 1))
 	vbox.add_child(port_label)
 
@@ -648,7 +648,7 @@ func _show_yanbing_network_dialog() -> void:
 	status_label.custom_minimum_size.y = 24
 	vbox.add_child(status_label)
 
-	var start_btn: Button = _create_setting_button("Start Game")
+	var start_btn: Button = _create_setting_button("开始游戏")
 	start_btn.visible = false
 	start_btn.disabled = true
 	start_btn.pressed.connect(func() -> void:
@@ -662,7 +662,7 @@ func _show_yanbing_network_dialog() -> void:
 	btn_row.add_theme_constant_override("separation", 12)
 	vbox.add_child(btn_row)
 
-	var create_btn: Button = _create_setting_button("Create Room")
+	var create_btn: Button = _create_setting_button("创建房间")
 	create_btn.custom_minimum_size.x = 90
 	create_btn.pressed.connect(func() -> void:
 		var port: int = int(port_edit.text) if port_edit.text.is_valid_int() else 9999
@@ -670,32 +670,32 @@ func _show_yanbing_network_dialog() -> void:
 		if err == OK:
 			var lan_ip: String = nm.get_local_lan_ip() if nm.has_method("get_local_lan_ip") else ""
 			if not lan_ip.is_empty():
-				status_label.text = "Room created. Peer should join %s:%d" % [lan_ip, port]
+				status_label.text = "房间已创建，请另一台设备加入 %s:%d" % [lan_ip, port]
 			else:
-				status_label.text = "Room created. Waiting for peer connection..."
+				status_label.text = "房间已创建，正在等待对方连接..."
 			status_label.add_theme_color_override("font_color", Color(0, 0.6, 0, 1))
 			start_btn.visible = true
 		else:
-			status_label.text = "Failed to create room. The port may already be in use."
+			status_label.text = "创建房间失败，端口可能已被占用。"
 			status_label.add_theme_color_override("font_color", Color(0.8, 0, 0, 1))
 	)
 	btn_row.add_child(create_btn)
 
-	var join_btn: Button = _create_setting_button("Join Room")
+	var join_btn: Button = _create_setting_button("加入房间")
 	join_btn.custom_minimum_size.x = 90
 	join_btn.pressed.connect(func() -> void:
 		var ip: String = ip_edit.text.strip_edges()
 		if ip.is_empty():
-			status_label.text = "Please enter the host IP first."
+			status_label.text = "请先输入房主 IP。"
 			status_label.add_theme_color_override("font_color", Color(0.8, 0, 0, 1))
 			return
 		var port: int = int(port_edit.text) if port_edit.text.is_valid_int() else 9999
 		var err: Error = nm.join_game(ip, port)
 		if err == OK:
-			status_label.text = "Connecting..."
+			status_label.text = "正在连接..."
 			status_label.add_theme_color_override("font_color", Color(0, 0.6, 0, 1))
 		else:
-			status_label.text = "Failed to connect. Check the IP, port, and LAN connection."
+			status_label.text = "连接失败，请检查 IP、端口和局域网连接。"
 			status_label.add_theme_color_override("font_color", Color(0.8, 0, 0, 1))
 	)
 	btn_row.add_child(join_btn)
@@ -707,7 +707,7 @@ func _show_yanbing_network_dialog() -> void:
 		if is_instance_valid(start_btn):
 			start_btn.disabled = false
 			if is_instance_valid(status_label):
-				status_label.text = "Peer connected. Tap Start Game to continue."
+				status_label.text = "对方已连接，请点击“开始游戏”。"
 				status_label.add_theme_color_override("font_color", Color(0, 0.6, 0, 1))
 	nm.connection_succeeded.connect(cb_succeeded)
 	nm.connection_failed.connect(cb_failed)
@@ -724,7 +724,7 @@ func _show_yanbing_network_dialog() -> void:
 			nm.host_can_start.disconnect(cb_host_can_start)
 		overlay.queue_free()
 
-	var close_btn: Button = _create_setting_button("Close")
+	var close_btn: Button = _create_setting_button("关闭")
 	close_btn.pressed.connect(close_yanbing)
 	btn_row.add_child(close_btn)
 
@@ -732,20 +732,20 @@ func _show_yanbing_network_dialog() -> void:
 
 func _on_yanbing_connection_succeeded(status_label: Label) -> void:
 	if is_instance_valid(status_label):
-		status_label.text = "Joined room successfully. Waiting for the host to start the game..."
+		status_label.text = "已成功加入房间，等待房主开始游戏..."
 		status_label.add_theme_color_override("font_color", Color(0, 0.6, 0, 1))
 
 
 func _on_yanbing_connection_failed(status_label: Label) -> void:
 	if is_instance_valid(status_label):
-		status_label.text = "Connection failed. Check the host IP and port."
+		status_label.text = "连接失败，请检查房主 IP 和端口。"
 		status_label.add_theme_color_override("font_color", Color(0.8, 0, 0, 1))
 
 
 func _on_mod_verify_failed(message: String) -> void:
 	var dialog: AcceptDialog = AcceptDialog.new()
-	dialog.title = "Unable to join"
-	dialog.dialog_text = "Mod verification failed and the room cannot be joined.\n\nPlease make sure the same mods and versions are installed on both devices.\n\n%s" % message
+	dialog.title = "无法加入房间"
+	dialog.dialog_text = "模组校验失败，无法加入房间。\n\n请确认双方安装的模组及版本完全一致。\n\n%s" % message
 	add_child(dialog)
 	dialog.confirmed.connect(dialog.queue_free)
 	call_deferred("_popup_mod_verify_failed", dialog)
@@ -788,20 +788,20 @@ func _populate_setting_buttons() -> void:
 		if is_instance_valid(c):
 			c.free()
 
-	var mod_btn: Button = _create_setting_button("Mod Extensions")
+	var mod_btn: Button = _create_setting_button("模组扩展")
 	mod_btn.pressed.connect(_on_mod_btn_pressed)
 	setting_button_container.add_child(mod_btn)
 
 	match _current_view:
 		View.MAIN_MENU:
-			var back_btn: Button = _create_setting_button("Back")
+			var back_btn: Button = _create_setting_button("返回")
 			back_btn.pressed.connect(_on_back_pressed)
 			setting_button_container.add_child(back_btn)
-			var quit_btn: Button = _create_setting_button("Quit Game")
+			var quit_btn: Button = _create_setting_button("退出游戏")
 			quit_btn.pressed.connect(_on_quit_pressed)
 			setting_button_container.add_child(quit_btn)
 		View.MODE_SELECT:
-			var quit_btn: Button = _create_setting_button("Quit Game")
+			var quit_btn: Button = _create_setting_button("退出游戏")
 			quit_btn.pressed.connect(_on_quit_pressed)
 			setting_button_container.add_child(quit_btn)
 
@@ -860,12 +860,12 @@ func _populate_mod_panel() -> void:
 	var details: Array = mod_manager.mod_details
 	if details.is_empty():
 		var empty_label: Label = Label.new()
-		empty_label.text = "No mods are currently loaded."
+		empty_label.text = "当前未加载任何模组。"
 		empty_label.add_theme_color_override("font_color", Color(0.294, 0.294, 0.29, 1))
 		empty_label.add_theme_font_size_override("font_size", 14)
 		empty_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 		mod_list.add_child(empty_label)
-		mod_detail_label.text = "Place mod folders in the mod storage directory to load them."
+		mod_detail_label.text = "将模组文件夹放入模组存放目录后即可加载。"
 	else:
 		for i: int in range(details.size()):
 			var info: Dictionary = details[i]
@@ -889,15 +889,15 @@ func _populate_mod_panel() -> void:
 			btn.pressed.connect(_on_mod_item_pressed.bind(idx))
 			row.add_child(btn)
 			mod_list.add_child(row)
-		mod_detail_label.text = "Select a mod above to view its details."
+		mod_detail_label.text = "点击上方条目查看详情。"
 	var overrides: Array = mod_manager.overridden_resources
 	if overrides.is_empty():
-		mod_override_label.text = "Overridden resources: none"
+		mod_override_label.text = "覆盖资源：无"
 	else:
 		var paths: Array[String] = []
 		for p: String in overrides:
 			paths.append(p.get_file())
-		mod_override_label.text = "Overridden resources: %s" % ", ".join(paths)
+		mod_override_label.text = "覆盖资源：%s" % ", ".join(paths)
 
 func _make_btn_style() -> StyleBoxFlat:
 	var s: StyleBoxFlat = StyleBoxFlat.new()
@@ -936,7 +936,7 @@ func _on_mod_item_pressed(index: int) -> void:
 	var info: Dictionary = details[index]
 	var desc: String = info.get("description", "")
 	if desc.is_empty():
-		desc = "No description provided."
+		desc = "暂无说明。"
 	mod_detail_label.text = desc
 
 
@@ -945,21 +945,21 @@ func _on_gen_template_pressed() -> void:
 	if path != "":
 		mod_manager.refresh_mod_details()
 		_populate_mod_panel()
-		mod_detail_label.text = "Template generated at:\n%s" % path
+		mod_detail_label.text = "模板已生成：\n%s" % path
 
 
 func _on_mod_refresh_pressed() -> void:
 	mod_manager.reload_all_mods()
 	_populate_mod_panel()
-	mod_detail_label.text = "Mod list refreshed."
+	mod_detail_label.text = "模组列表已刷新。"
 
 
 func _on_browse_dir_pressed() -> void:
 	var abs_path: String = mod_manager.get_mod_storage_path_absolute()
 	if OS.has_feature("android"):
 		var popup: AcceptDialog = AcceptDialog.new()
-		popup.title = "Mod Storage Path"
-		popup.dialog_text = "Place mod folders in:\n\n%s" % abs_path
+		popup.title = "模组存放路径"
+		popup.dialog_text = "请将模组文件夹放入：\n\n%s" % abs_path
 		add_child(popup)
 		popup.confirmed.connect(popup.queue_free)
 		call_deferred("_show_path_popup_deferred", popup)

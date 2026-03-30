@@ -2060,7 +2060,7 @@ func _populate_battle_setting_buttons() -> void:
 		if is_instance_valid(c):
 			c.free()
 	var style: StyleBoxFlat = _make_setting_btn_style()
-	var mod_btn: Button = _create_setting_btn("Mod 扩展", style)
+	var mod_btn: Button = _create_setting_btn("模组扩展", style)
 	mod_btn.pressed.connect(_on_mod_pressed)
 	setting_button_container.add_child(mod_btn)
 	var restart_btn_inner: Button = _create_setting_btn("重新开始", style)
@@ -2225,13 +2225,13 @@ func _on_gen_template_pressed() -> void:
 		mod_manager.refresh_mod_details()
 		_populate_mod_panel()
 		mod_detail_label.text = "模板已生成！\n路径已输出到控制台：\n%s" % path
-		_append_log("[color=green]Mod 模板已生成: %s[/color]" % path, -2)
+		_append_log("[color=green]模组模板已生成：%s[/color]" % path, -2)
 
 
 func _on_mod_refresh_pressed() -> void:
 	mod_manager.reload_all_mods()
 	_populate_mod_panel()
-	mod_detail_label.text = "已刷新 Mod 列表"
+	mod_detail_label.text = "已刷新模组列表"
 
 
 func _on_browse_dir_pressed() -> void:
@@ -2244,8 +2244,8 @@ func _on_browse_dir_pressed() -> void:
 
 func _show_path_popup(path: String) -> void:
 	var popup: AcceptDialog = AcceptDialog.new()
-	popup.title = "Mod 存放路径"
-	popup.dialog_text = "请将 Mod 文件夹放入以下目录：\n\n%s\n\n可使用文件管理器复制此路径查找。" % path
+	popup.title = "模组存放路径"
+	popup.dialog_text = "请将模组文件夹放入以下目录：\n\n%s\n\n可使用文件管理器复制此路径查找。" % path
 	add_child(popup)
 	popup.confirmed.connect(popup.queue_free)
 	call_deferred("_show_path_popup_deferred", popup)
@@ -2272,7 +2272,7 @@ func _populate_mod_panel() -> void:
 		empty_label.add_theme_font_size_override("font_size", 14)
 		empty_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 		mod_list.add_child(empty_label)
-		mod_detail_label.text = "将 Mod 文件夹放入 Mod 存放目录即可加载\n点击「浏览目录」查看路径"
+		mod_detail_label.text = "将模组文件夹放入模组存放目录即可加载\n点击「浏览目录」查看路径"
 	else:
 		for i: int in range(details.size()):
 			var info: Dictionary = details[i]
